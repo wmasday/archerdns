@@ -24,7 +24,8 @@ def subdomain(domain):
         subdo.crtsh()
         subdo.alienvault()
         subdo.rapiddns()
-        
+        subdo.securitytrails()
+        subdo.hackertarget()
     except:pass
     
 def reverseip(domain):

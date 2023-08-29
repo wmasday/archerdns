@@ -1,6 +1,7 @@
-import os, re, sys, requests
+import os, re, sys, requests, cloudscraper
 from bs4 import BeautifulSoup
 from fake_useragent import UserAgent
+scraper = cloudscraper.create_scraper()
 
 class Subdomain:
     def __init__(self, domain):
@@ -8,6 +9,7 @@ class Subdomain:
         self.ua = UserAgent()
         self.headers = {'User-Agent': str(self.ua)}
         self.timeout = 30
+        self.path = ''
         
     def regexers(self, data, filename, platform):
         try:
@@ -71,3 +73,52 @@ class Subdomain:
             self.regexers(domains, 'domain.txt', 'RASENMEDIA')
         except:pass
     
+    def securitytrails(self):
+        try:
+            response = scraper.get('https://securitytrails.com/_next/data/'+ self.path +'/list/apex_domain/'+ self.domain +'.json?domain='+ self.domain, headers=self.headers, timeout=self.timeout).text
+            if '<title>Just a moment...</title>' in response:
+                return False
+            else:pass
+            
+            domains = re.findall('"hostname":"(.*?)",', response)
+            domains = domains.remove('hostname.placeholder0')
+            domains = domains.remove('hostname.placeholder1')
+            domains = domains.remove('hostname.placeholder2')
+            
+            self.regexers(domains, 'domain.txt', 'SECURITYTRAILS')
+            
+            max = re.findall('"pages":(.*?),"records"', response)[0]
+            if int(max) == 1:
+                return True
+            else:pass
+            
+            for page in range(1, int(max + 1)):
+                response = scraper.get('https://securitytrails.com/_next/data/'+ self.path +'/list/apex_domain/'+ self.domain +'.json?page='+ page +'&domain='+ self.domain, headers=self.headers, timeout=self.timeout).text
+                domains = re.findall('"hostname":"(.*?)",', response)
+                self.regexers(domains, 'domain.txt', 'SECURITYTRAILS')
+                
+        except:pass
+    
+    def hackertarget(self):
+        try:
+            domains = []
+            ips = []
+
+            response = scraper.get('https://api.hackertarget.com/hostsearch/?q='+ self.domain, headers=self.headers, timeout=self.timeout).text
+            
+            if 'API count exceeded' in response:
+                return False
+            else:pass
+            
+            response = response.split('\n')
+            response = list(filter(None, response))
+            
+            
+            for data in response:
+                data = data.split(',')
+                domains.append(data[0])
+                ips.append(data[1])
+                
+            self.regexers(domains, 'domain.txt', 'HACKERTARGET DOMAIN')
+            self.regexers(ips, 'ip.txt', 'HACKERTARGET IP')
+        except:pass
