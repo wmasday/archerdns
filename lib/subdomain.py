@@ -9,7 +9,7 @@ class Subdomain:
         self.ua = UserAgent()
         self.headers = {'User-Agent': str(self.ua)}
         self.timeout = 30
-        self.path = ''
+        self.path = 'ca839924'
         
     def regexers(self, data, filename, platform):
         try:

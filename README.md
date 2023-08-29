@@ -1,6 +1,6 @@
 # ArcherDNS
 
-**ArcherDNS** | Simple Tool For Getting Subdomain & Reverse IP Lookup With 5 API Platform / Endpoint Active.
+**ArcherDNS** | Simple Tool For Getting Subdomain & Reverse IP Lookup With 8 API Platform / Endpoint Active.
 
 API Platform / Endpoint :
 
@@ -9,3 +9,5 @@ API Platform / Endpoint :
 - [dnsdumpster.com](https://dnsdumpster.com/)
 - [rapiddns.io](https://rapiddns.io/)
 - [rasenmedia](https://rasenmedia.my.id/)
+- [hackertarget.com](https://hackertarget.com/)
+- [securitytrails.com](https://securitytrails.com/)
