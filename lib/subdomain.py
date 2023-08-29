@@ -81,10 +81,6 @@ class Subdomain:
             else:pass
             
             domains = re.findall('"hostname":"(.*?)",', response)
-            domains = domains.remove('hostname.placeholder0')
-            domains = domains.remove('hostname.placeholder1')
-            domains = domains.remove('hostname.placeholder2')
-            
             self.regexers(domains, 'domain.txt', 'SECURITYTRAILS')
             
             max = re.findall('"pages":(.*?),"records"', response)[0]
