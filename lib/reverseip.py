@@ -1,4 +1,5 @@
 import os, re, sys, requests
+from bs4 import BeautifulSoup
 
 class ReverseIP:
     def __init__(self, domain):
@@ -21,6 +22,19 @@ class ReverseIP:
             self.regexers(domains, 'domain.txt', 'RAPIDDNS SUBDOMAIN')
 
             ips = re.findall(r'same ip website reverse ip">(.*?)</a>', response)
-            self.regexers(ips, 'rapiddns-ip.txt', 'RAPIDDNS IP')
+            self.regexers(ips, 'rapiddns-ip.txt', 'RAPIDDNS')
         except:pass
-
+        
+    def rasenmedia(self):
+        try:
+            data = {'input': self.domain, 'execute': 'Reverse'}
+            response = requests.post('https://rasenmedia.my.id/tools/networking/reverse-ip', headers=self.headers, data=data, timeout=self.timeout).text
+            soup = BeautifulSoup(response, 'html.parser')
+            domains = soup.find('textarea',{'class':'form-control'}).text
+            if 'Not Found!' in domains:
+                return False
+            
+            domains = domains.split('\n')
+            domains = list(filter(None, domains))
+            self.regexers(domains, 'domain.txt', 'RASENMEDIA')
+        except:pass

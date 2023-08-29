@@ -1,31 +1,58 @@
 from multiprocessing.dummy import Pool
-import os, re, sys, requests
 from lib.subdomain import Subdomain
 from lib.reverseip import ReverseIP
-headers = {'User-Agent': 'Mozilla/5.0 (Linux; Android 7.0; SM-G892A Build/NRD90M; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/60.0.3112.107 Mobile Safari/537.36'}
-timeout = 30
+import os
 
 banner = '''
 @trustsec;
 
 [ 1 ] Subdomain Finder
 [ 2 ] Reverse IPs - Use Domain
-[ 3 ] 
 '''
 
+def clear():
+    try:
+        os.system('clear')
+    except:
+        os.system('cls')
+        
 def subdomain(domain):
     try:
         subdo = Subdomain(domain)
-        subdo.rapiddns()
+        subdo.rasenmedia()
         subdo.dnsdumpster()
         subdo.crtsh()
         subdo.alienvault()
+        subdo.rapiddns()
+        
     except:pass
     
 def reverseip(domain):
     try:
-        subdo = ReverseIP(domain)
-        subdo.rapiddns()
+        reverse = ReverseIP(domain)
+        reverse.rapiddns()
     except:pass
+
     
-subdomain('ui.ac.id')
+def archerdns():
+    clear()
+    print (banner)
+    option = input("[?] Option : ")
+    
+    clear()
+    filename = input("[?] List   : ")
+    domain = open(filename, 'r', encoding='utf8').read().splitlines()
+    
+    try:
+        pp = Pool(10)
+        if int(option) == 1:
+            pp.map(subdomain, domain)
+        elif int(option) == 2:
+            pp.map(reverseip, domain)
+        else:
+            archerdns()
+    except:
+        pass
+
+if __name__ == '__main__':
+    archerdns()
