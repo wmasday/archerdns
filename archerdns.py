@@ -1,6 +1,7 @@
 from multiprocessing.dummy import Pool
 from lib.subdomain import Subdomain
 from lib.reverseip import ReverseIP
+from lib.history import History
 import os
 
 banner = '''
@@ -8,6 +9,7 @@ banner = '''
 
 [ 1 ] Subdomain Finder
 [ 2 ] Reverse IPs - Use Domain
+[ 3 ] Domain History (IP, IPv6, Hostname, Name Server, Email SOA)
 '''
 
 def clear():
@@ -28,12 +30,20 @@ def subdomain(domain):
         subdo.hackertarget()
     except:pass
     
-def reverseip(domain):
+def reverse(domain):
     try:
-        reverse = ReverseIP(domain)
-        reverse.rapiddns()
+        reverser = ReverseIP(domain)
+        reverser.rapiddns()
+        reverser.rasenmedia()
+        reverser.hackertarget()
+        reverser.securitytrails()
     except:pass
 
+def history(domain):
+    try:
+        historier = History(domain)
+        historier.securitytrails()
+    except:pass
     
 def archerdns():
     clear()
@@ -49,7 +59,9 @@ def archerdns():
         if int(option) == 1:
             pp.map(subdomain, domain)
         elif int(option) == 2:
-            pp.map(reverseip, domain)
+            pp.map(reverse, domain)
+        elif int(option) == 3:
+            pp.map(history, domain)
         else:
             archerdns()
     except:

@@ -9,7 +9,7 @@ class Subdomain:
         self.ua = UserAgent()
         self.headers = {'User-Agent': str(self.ua)}
         self.timeout = 30
-        self.path = 'ca839924'
+        self.path = open('securitytrails.path', 'r').read()
         
     def regexers(self, data, filename, platform):
         try:
@@ -90,6 +90,10 @@ class Subdomain:
             
             for page in range(1, int(max + 1)):
                 response = scraper.get('https://securitytrails.com/_next/data/'+ self.path +'/list/apex_domain/'+ self.domain +'.json?page='+ page +'&domain='+ self.domain, headers=self.headers, timeout=self.timeout).text
+                if '<title>Just a moment...</title>' in response:
+                    return False
+                else:pass
+                
                 domains = re.findall('"hostname":"(.*?)",', response)
                 self.regexers(domains, 'domain.txt', 'SECURITYTRAILS')
                 
