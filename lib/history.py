@@ -6,6 +6,7 @@ scraper = cloudscraper.create_scraper()
 class History:
     def __init__(self, domain):
         self.domain = domain
+        self.ua = UserAgent()
         self.headers = {'User-Agent': str(self.ua)}
         self.timeout = 30
         self.path = open('securitytrails.path', 'r').read()
